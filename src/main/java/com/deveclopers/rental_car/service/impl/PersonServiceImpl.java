@@ -1,0 +1,25 @@
+package com.deveclopers.rental_car.service.impl;
+
+import com.deveclopers.rental_car.document.dto.PersonDto;
+import com.deveclopers.rental_car.mapper.PersonMapper;
+import com.deveclopers.rental_car.repository.PersonRepository;
+import com.deveclopers.rental_car.service.PersonService;
+import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
+
+@Service
+public class PersonServiceImpl implements PersonService {
+
+  private final PersonRepository personRepository;
+
+  private static final PersonMapper personMapper = PersonMapper.INSTANCE;
+
+  public PersonServiceImpl(PersonRepository personRepository) {
+    this.personRepository = personRepository;
+  }
+
+  @Override
+  public Mono<Void> createPerson(PersonDto personDto) {
+    return personRepository.save(personMapper.toEntity(personDto)).then();
+  }
+}
