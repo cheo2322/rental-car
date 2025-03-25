@@ -4,10 +4,12 @@ import com.deveclopers.rental_car.document.Brand;
 import com.deveclopers.rental_car.document.Model;
 import com.deveclopers.rental_car.document.dto.BrandDto;
 import com.deveclopers.rental_car.document.dto.CarDto;
+import com.deveclopers.rental_car.document.dto.CategoryDto;
 import com.deveclopers.rental_car.document.dto.DefaultDto;
 import com.deveclopers.rental_car.document.dto.ModelDto;
 import com.deveclopers.rental_car.mapper.CarMapper;
 import com.deveclopers.rental_car.repository.BrandRepository;
+import com.deveclopers.rental_car.repository.CategoryRepository;
 import com.deveclopers.rental_car.repository.ModelRepository;
 import com.deveclopers.rental_car.service.CarService;
 import org.bson.types.ObjectId;
@@ -20,12 +22,18 @@ public class CarServiceImpl implements CarService {
 
   private final BrandRepository brandRepository;
   private final ModelRepository modelRepository;
+  private final CategoryRepository categoryRepository;
 
   private static final CarMapper CAR_MAPPER = CarMapper.INSTANCE;
 
-  public CarServiceImpl(BrandRepository brandRepository, ModelRepository modelRepository) {
+  public CarServiceImpl(
+      BrandRepository brandRepository,
+      ModelRepository modelRepository,
+      CategoryRepository categoryRepository) {
+
     this.brandRepository = brandRepository;
     this.modelRepository = modelRepository;
+    this.categoryRepository = categoryRepository;
   }
 
   @Override
@@ -56,6 +64,14 @@ public class CarServiceImpl implements CarService {
                       ex -> Mono.empty()); // TODO: TD: Add exception handler
             })
         .switchIfEmpty(Mono.defer(() -> Mono.empty())); // TODO: TD: Add exception handler
+  }
+
+  @Override
+  public Mono<DefaultDto> createCategory(CategoryDto categoryDto) {
+    return categoryRepository
+        .save(CAR_MAPPER.dtoToEntity(categoryDto))
+        .map(category -> new DefaultDto(category.getId()))
+        .onErrorResume(DuplicateKeyException.class, ex -> Mono.empty());
   }
 
   @Override
