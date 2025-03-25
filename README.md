@@ -11,7 +11,7 @@
   **TD** : Upload photo for client. Upload photo for license. Ask for interests to the client :hammer_and_wrench:
 
 - **US2**: As an admin, office admin, rental agent or private car owner, I would like to add a Brand, a Model and a
-  Category to be eligible for a Car :hourglass:
+  Category to be eligible for a Car :white_check_mark:
   **TD** : Upload logo for brand. Add the addedByEmployeeId field :hammer_and_wrench:
 
 - **US3**: As an office admin, I would like to add a Car from the company :rocket:
