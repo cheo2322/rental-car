@@ -10,14 +10,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document
 @Getter
 @Setter
-public class Office {
+public class Owner {
 
   @Id private String id;
-  private String country;
-  private String state;
-  private String city;
-  private List<String> phones;
-  private ObjectId adminEmployeeId;
-  private String description;
-  private String coordinates;
+  private List<ObjectId> carIds;
+  private ObjectId personId;
 }

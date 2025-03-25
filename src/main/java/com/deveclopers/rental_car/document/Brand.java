@@ -10,11 +10,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Setter
 public class Brand {
 
-    @Id
-    private String id;
+  @Id private String id;
 
-    private String name;
-    private String country;
-    private String logo;
-    private String description;
+  private String name;
+  private String country;
+  private String logo;
+  private String description;
 }

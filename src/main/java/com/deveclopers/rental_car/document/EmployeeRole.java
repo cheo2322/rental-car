@@ -1,33 +1,23 @@
 package com.deveclopers.rental_car.document;
 
+import java.time.LocalDate;
 import lombok.Getter;
 import lombok.Setter;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.DocumentReference;
-
-import java.time.LocalDate;
 
 @Document
 @Getter
 @Setter
 public class EmployeeRole {
 
-    @Id
-    private String id;
-
-    @DocumentReference
-    private Employee employee;
-
-    @DocumentReference
-    private Role role;
-
-    private LocalDate start;
-    private LocalDate end;
-    private Boolean isActive;
-
-    @DocumentReference
-    private Office office;
-
-    private String comments;
+  @Id private String id;
+  private ObjectId employeeId;
+  private ObjectId roleId;
+  private LocalDate start;
+  private LocalDate end;
+  private Boolean isActive;
+  private ObjectId officeId;
+  private String comments;
 }
