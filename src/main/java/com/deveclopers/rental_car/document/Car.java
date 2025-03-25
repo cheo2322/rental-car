@@ -12,15 +12,14 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Car {
 
   @Id private String id;
-
-  private Brand brand;
-  private Model model;
+  private ObjectId brandId;
+  private ObjectId modelId;
   private Integer year;
   private String color;
   private String plate;
   private Integer doors;
   private Integer seats;
-  private Category category;
+  private ObjectId categoryId;
   private Double value;
 
   /*
@@ -39,4 +38,5 @@ public class Car {
   private ObjectId ownerPersonId;
   private String assemblyCountry;
   private String description;
+  private Boolean verified;
 }
