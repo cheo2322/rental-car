@@ -7,6 +7,7 @@ import com.deveclopers.rental_car.mapper.PersonMapper;
 import com.deveclopers.rental_car.repository.ClientRepository;
 import com.deveclopers.rental_car.repository.PersonRepository;
 import com.deveclopers.rental_car.service.ClientService;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
@@ -32,7 +33,7 @@ public class ClientServiceImpl implements ClientService {
         .flatMap(
             person -> {
               Client client = new Client();
-              client.setPerson(person);
+              client.setPersonId(new ObjectId(person.getId()));
 
               return clientRepository.save(client);
             })
@@ -46,7 +47,7 @@ public class ClientServiceImpl implements ClientService {
         .flatMap(
             person ->
                 clientRepository
-                    .findByPerson_Id(person.getId())
+                    .findByPersonId(new ObjectId(person.getId()))
                     .map(client -> new ClientDto(client.getId()))
                     .switchIfEmpty(Mono.empty()))
         .switchIfEmpty(Mono.empty());

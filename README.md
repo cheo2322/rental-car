@@ -1,10 +1,17 @@
 # Rental Car web service
 
+## First Tasks
+- Create Roles
+
 ## User Stories
 
-**US1** : As a Client, I would like to rent a car as a new user. :hourglass:
+- **US1** : As a new Client, I would like to be registered in the system :hourglass:
+  Endpoints: POST Person, POST Client, POST License
+- **US2**: 
 
-**US-Pending** : Upload photo for client. Upload photo for license. Ask for interests to the client.
+- **US#** : As a registered Client, I would like to filter Cars by brand :rocket:
+- **TD** : Upload photo for client. Upload photo for license. Ask for interests to the client :
+  hammer_and_wrench:
 
 ## Glossary
 

@@ -7,6 +7,7 @@ import com.deveclopers.rental_car.repository.ClientRepository;
 import com.deveclopers.rental_car.repository.LicenseRepository;
 import com.deveclopers.rental_car.service.LicenseService;
 import org.apache.commons.lang3.StringUtils;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
@@ -34,7 +35,7 @@ public class LicenseServiceImpl implements LicenseService {
                     .save(licenseMapper.dtoToEntity(licenseDto))
                     .flatMap(
                         driverLicense -> {
-                          client.setDriverLicense(driverLicense);
+                          client.setDriverLicenseId(new ObjectId(driverLicense.getId()));
 
                           return clientRepository
                               .save(client)
@@ -49,10 +50,10 @@ public class LicenseServiceImpl implements LicenseService {
         .findById(clientId)
         .flatMap(
             client -> {
-              if (client.getDriverLicense() != null
-                  && !StringUtils.isBlank(client.getDriverLicense().getId())) {
+              if (client.getDriverLicenseId() != null
+                  && !StringUtils.isBlank(client.getDriverLicenseId().toHexString())) {
 
-                return Mono.just(new DefaultDto(client.getDriverLicense().getId()));
+                return Mono.just(new DefaultDto(client.getDriverLicenseId().toHexString()));
               }
 
               return Mono.empty();
