@@ -1,5 +1,7 @@
 package com.deveclopers.rental_car.service.impl;
 
+import com.deveclopers.rental_car.document.Person;
+import com.deveclopers.rental_car.document.dto.DefaultDto;
 import com.deveclopers.rental_car.document.dto.PersonDto;
 import com.deveclopers.rental_car.mapper.PersonMapper;
 import com.deveclopers.rental_car.repository.PersonRepository;
@@ -20,6 +22,15 @@ public class PersonServiceImpl implements PersonService {
 
   @Override
   public Mono<Void> createPerson(PersonDto personDto) {
-    return personRepository.save(personMapper.toEntity(personDto)).then();
+    Person entity = personMapper.toEntity(personDto);
+    return personRepository.save(entity).then();
+  }
+
+  @Override
+  public Mono<DefaultDto> getPerson(String personIdentification) {
+    return personRepository
+        .findByIdentification(personIdentification)
+        .map(person -> new DefaultDto(person.getId()))
+        .switchIfEmpty(Mono.error(new RuntimeException("Person not found.")));
   }
 }

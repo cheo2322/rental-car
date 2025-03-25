@@ -1,6 +1,7 @@
 package com.deveclopers.rental_car.service.impl;
 
 import com.deveclopers.rental_car.document.Client;
+import com.deveclopers.rental_car.document.Person;
 import com.deveclopers.rental_car.document.dto.ClientDto;
 import com.deveclopers.rental_car.document.dto.PersonDto;
 import com.deveclopers.rental_car.mapper.PersonMapper;
@@ -27,11 +28,7 @@ public class ClientServiceImpl implements ClientService {
   public Mono<ClientDto> createClient(PersonDto personDto) {
     return personRepository
         .findByIdentification(personDto.identification())
-        .flatMap(
-            personDB -> {
-              // TODO: Update in case needed
-              return personRepository.save(personDB);
-            })
+        .flatMap(personDB -> Mono.just(personDB)) // TODO: Technical debt -> Update when needed
         .switchIfEmpty(Mono.defer(() -> personRepository.save(personMapper.toEntity(personDto))))
         .flatMap(
             person -> {
@@ -41,5 +38,18 @@ public class ClientServiceImpl implements ClientService {
               return clientRepository.save(client);
             })
         .map(client -> new ClientDto(client.getId()));
+  }
+
+  @Override
+  public Mono<ClientDto> getClient(String personIdentification) {
+    Mono<Person> byIdentification = personRepository.findByIdentification(personIdentification);
+    return byIdentification
+        .flatMap(
+            person ->
+                clientRepository
+                    .findByPerson_Id(person.getId())
+                    .map(client -> new ClientDto(client.getId()))
+                    .switchIfEmpty(Mono.empty()))
+        .switchIfEmpty(Mono.empty());
   }
 }
