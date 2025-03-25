@@ -2,6 +2,7 @@ package com.deveclopers.rental_car.controller;
 
 import com.deveclopers.rental_car.document.dto.BrandDto;
 import com.deveclopers.rental_car.document.dto.DefaultDto;
+import com.deveclopers.rental_car.document.dto.ModelDto;
 import com.deveclopers.rental_car.service.CarService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,14 @@ public class CarController {
   public Mono<ResponseEntity<DefaultDto>> createBrand(@RequestBody BrandDto brandDto) {
     return carService
         .createBrand(brandDto)
+        .map(defaultDto -> ResponseEntity.status(HttpStatus.CREATED).body(defaultDto))
+        .defaultIfEmpty(ResponseEntity.badRequest().build());
+  }
+
+  @PostMapping("/models")
+  public Mono<ResponseEntity<DefaultDto>> createModel(@RequestBody ModelDto modelDto) {
+    return carService
+        .createModel(modelDto)
         .map(defaultDto -> ResponseEntity.status(HttpStatus.CREATED).body(defaultDto))
         .defaultIfEmpty(ResponseEntity.badRequest().build());
   }
