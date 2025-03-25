@@ -1,7 +1,6 @@
 package com.deveclopers.rental_car.service.impl;
 
 import com.deveclopers.rental_car.document.Client;
-import com.deveclopers.rental_car.document.Person;
 import com.deveclopers.rental_car.document.dto.ClientDto;
 import com.deveclopers.rental_car.document.dto.PersonDto;
 import com.deveclopers.rental_car.mapper.PersonMapper;
@@ -42,8 +41,8 @@ public class ClientServiceImpl implements ClientService {
 
   @Override
   public Mono<ClientDto> getClient(String personIdentification) {
-    Mono<Person> byIdentification = personRepository.findByIdentification(personIdentification);
-    return byIdentification
+    return personRepository
+        .findByIdentification(personIdentification)
         .flatMap(
             person ->
                 clientRepository

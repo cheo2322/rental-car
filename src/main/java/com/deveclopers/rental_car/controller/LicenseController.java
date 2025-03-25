@@ -27,4 +27,13 @@ public class LicenseController {
         .map(defaultDto -> ResponseEntity.status(HttpStatus.CREATED).body(defaultDto))
         .defaultIfEmpty(ResponseEntity.notFound().build());
   }
+
+  @GetMapping("/{clientId}")
+  public Mono<ResponseEntity<DefaultDto>> getLicense(@PathVariable String clientId) {
+
+    return licenseService
+        .getLicense(clientId)
+        .map(ResponseEntity::ok)
+        .defaultIfEmpty(ResponseEntity.notFound().build());
+  }
 }

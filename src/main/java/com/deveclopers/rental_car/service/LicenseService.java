@@ -14,7 +14,15 @@ public interface LicenseService {
    *
    * @param clientId to relate the License.
    * @param licenseDto
-   * @return
+   * @return A DefaultDto containing the Client ID.
    */
   Mono<DefaultDto> createLicense(String clientId, LicenseDto licenseDto);
+
+  /**
+   * Get a {@link DriverLicense} document by clientId.
+   *
+   * @param clientId to get the license related with.
+   * @return the License in case it exists, empty otherwise.
+   */
+  Mono<DefaultDto> getLicense(String clientId);
 }
