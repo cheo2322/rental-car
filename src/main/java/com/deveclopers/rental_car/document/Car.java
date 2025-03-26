@@ -1,5 +1,6 @@
 package com.deveclopers.rental_car.document;
 
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import org.bson.types.ObjectId;
@@ -39,8 +40,9 @@ public class Car {
   private Double dayPrice;
   private String condition;
   private Boolean isOwned;
-  private ObjectId ownerPersonId;
+  private ObjectId carOwnerPersonId;
   private String assemblyCountry;
   private String description;
-  private Boolean verified;
+  private Boolean isVerified;
+  private List<String> photos;
 }

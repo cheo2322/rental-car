@@ -1,6 +1,8 @@
 package com.deveclopers.rental_car.service.impl;
 
 import com.deveclopers.rental_car.document.Brand;
+import com.deveclopers.rental_car.document.Car;
+import com.deveclopers.rental_car.document.Category;
 import com.deveclopers.rental_car.document.Model;
 import com.deveclopers.rental_car.document.dto.BrandDto;
 import com.deveclopers.rental_car.document.dto.CarDto;
@@ -13,6 +15,7 @@ import com.deveclopers.rental_car.repository.CarRepository;
 import com.deveclopers.rental_car.repository.CategoryRepository;
 import com.deveclopers.rental_car.repository.ModelRepository;
 import com.deveclopers.rental_car.service.CarService;
+import java.util.function.Function;
 import org.bson.types.ObjectId;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
@@ -83,15 +86,54 @@ public class CarServiceImpl implements CarService {
     return carRepository
         .findByPlate(carDto.plate().toUpperCase())
         .hasElement()
-        .flatMap(
-            exists -> {
-              if (exists) {
-                return Mono.empty();
-              } else {
-                return carRepository
-                    .save(CAR_MAPPER.dtoToEntity(carDto))
-                    .map(savedCar -> new DefaultDto(savedCar.getId()));
-              }
-            });
+        .flatMap(getExistsHandler(carDto));
+  }
+
+  private Function<Boolean, Mono<DefaultDto>> getExistsHandler(CarDto carDto) {
+    return exists -> {
+      if (exists) {
+        return Mono.empty();
+      } else {
+        return brandRepository
+            .findByName(carDto.brandName())
+            .flatMap(getBrandHandler(carDto))
+            .switchIfEmpty(Mono.empty());
+      }
+    };
+  }
+
+  private Function<Brand, Mono<DefaultDto>> getBrandHandler(CarDto carDto) {
+    return brand ->
+        modelRepository
+            .findByName(carDto.modelName())
+            .flatMap(getModelHandler(carDto, brand))
+            .switchIfEmpty(Mono.empty());
+  }
+
+  private Function<Model, Mono<DefaultDto>> getModelHandler(CarDto carDto, Brand brand) {
+    return model ->
+        categoryRepository
+            .findByName(carDto.categoryName())
+            .flatMap(getCategoryHandler(carDto, brand, model))
+            .switchIfEmpty(Mono.empty());
+  }
+
+  private Function<Category, Mono<DefaultDto>> getCategoryHandler(
+      CarDto carDto, Brand brand, Model model) {
+    return category -> {
+      Car car = CAR_MAPPER.dtoToEntity(carDto);
+      car.setBrandId(new ObjectId(brand.getId()));
+      car.setModelId(new ObjectId(model.getId()));
+      car.setYear(carDto.year());
+      car.setColor(carDto.color());
+      car.setPlate(carDto.plate());
+      car.setDoors(carDto.doors());
+      car.setSeats(carDto.seats());
+      car.setCategoryId(new ObjectId(category.getId()));
+      car.setIsOwned(true);
+      car.setIsVerified(true); // Take care with Roles
+
+      return carRepository.save(car).map(savedCar -> new DefaultDto(savedCar.getId()));
+    };
   }
 }

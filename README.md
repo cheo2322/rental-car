@@ -17,9 +17,12 @@
 
   **Endpoints** : POST Brand, POST Model, POST Category :link:
 
-  **TD** : Upload logo for brand. Add the addedByEmployeeId field :hammer_and_wrench:
+  **TD** : Upload logo for brand. Add the addedByEmployeeId field. Create identifiers instead of look for the whole
+  names :hammer_and_wrench:
 
-- **US3**: As an office admin, I would like to add a Car from the company :hourglass:
+- **US3** : As an office admin, I would like to add a Car from the company :hourglass:
+
+  **TD** : Check the role in order to add the attributes. Condition ? . Add photos for Car :hammer_and_wrench:
 
 - **US#** : As a registered Client, I would like to filter Cars by brand :rocket:
 - **US#** : As a private Car Owner, I would like to register my car to be rented by the company :rocket:
