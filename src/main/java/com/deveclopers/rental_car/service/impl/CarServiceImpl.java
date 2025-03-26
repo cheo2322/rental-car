@@ -9,6 +9,7 @@ import com.deveclopers.rental_car.document.dto.DefaultDto;
 import com.deveclopers.rental_car.document.dto.ModelDto;
 import com.deveclopers.rental_car.mapper.CarMapper;
 import com.deveclopers.rental_car.repository.BrandRepository;
+import com.deveclopers.rental_car.repository.CarRepository;
 import com.deveclopers.rental_car.repository.CategoryRepository;
 import com.deveclopers.rental_car.repository.ModelRepository;
 import com.deveclopers.rental_car.service.CarService;
@@ -23,17 +24,20 @@ public class CarServiceImpl implements CarService {
   private final BrandRepository brandRepository;
   private final ModelRepository modelRepository;
   private final CategoryRepository categoryRepository;
+  private final CarRepository carRepository;
 
   private static final CarMapper CAR_MAPPER = CarMapper.INSTANCE;
 
   public CarServiceImpl(
       BrandRepository brandRepository,
       ModelRepository modelRepository,
-      CategoryRepository categoryRepository) {
+      CategoryRepository categoryRepository,
+      CarRepository carRepository) {
 
     this.brandRepository = brandRepository;
     this.modelRepository = modelRepository;
     this.categoryRepository = categoryRepository;
+    this.carRepository = carRepository;
   }
 
   @Override
@@ -63,7 +67,7 @@ public class CarServiceImpl implements CarService {
                       DuplicateKeyException.class,
                       ex -> Mono.empty()); // TODO: TD: Add exception handler
             })
-        .switchIfEmpty(Mono.defer(() -> Mono.empty())); // TODO: TD: Add exception handler
+        .switchIfEmpty(Mono.empty()); // TODO: TD: Add exception handler
   }
 
   @Override
@@ -76,6 +80,18 @@ public class CarServiceImpl implements CarService {
 
   @Override
   public Mono<DefaultDto> createCar(CarDto carDto) {
-    return null;
+    return carRepository
+        .findByPlate(carDto.plate().toUpperCase())
+        .hasElement()
+        .flatMap(
+            exists -> {
+              if (exists) {
+                return Mono.empty();
+              } else {
+                return carRepository
+                    .save(CAR_MAPPER.dtoToEntity(carDto))
+                    .map(savedCar -> new DefaultDto(savedCar.getId()));
+              }
+            });
   }
 }

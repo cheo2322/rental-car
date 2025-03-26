@@ -1,9 +1,11 @@
 package com.deveclopers.rental_car.mapper;
 
 import com.deveclopers.rental_car.document.Brand;
+import com.deveclopers.rental_car.document.Car;
 import com.deveclopers.rental_car.document.Category;
 import com.deveclopers.rental_car.document.Model;
 import com.deveclopers.rental_car.document.dto.BrandDto;
+import com.deveclopers.rental_car.document.dto.CarDto;
 import com.deveclopers.rental_car.document.dto.CategoryDto;
 import com.deveclopers.rental_car.document.dto.ModelDto;
 import org.mapstruct.Mapper;
@@ -22,6 +24,9 @@ public interface CarMapper {
   Model dtoToEntity(ModelDto modelDto);
 
   Category dtoToEntity(CategoryDto categoryDto);
+
+  @Mapping(target = "plate", source = "plate", qualifiedByName = "toUpperCase")
+  Car dtoToEntity(CarDto carDto);
 
   @Named("toUpperCase")
   default String toUpperCase(String name) {
