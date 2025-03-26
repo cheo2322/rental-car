@@ -20,14 +20,23 @@
   **TD** : Upload logo for brand. Add the addedByEmployeeId field. Create identifiers instead of look for the whole
   names :hammer_and_wrench:
 
-- **US3** : As an office admin, I would like to add a Car from the company :hourglass:
+- **US3** : As an admin, office admin or car owner, I would like to add a Car from the company :white_check_mark:
+
+  **Endpoints** : POST Car
 
   **TD** : Check the role in order to add the attributes. Condition ? . Add photos for Car :hammer_and_wrench:
+
+- **US4** : As a registered Client, I would like to rent a selected Car :white_check_mark:
+
+  **Endpoints** : POST CreateRentRecord
+
+  **TD** : Add the business responsible. Read the Client ID from Spring Security. Create a way to reserve Car before to
+  pay, in order to avoid crashes
 
 - **US#** : As a registered Client, I would like to filter Cars by brand :rocket:
 - **US#** : As a private Car Owner, I would like to register my car to be rented by the company :rocket:
 - **US#** : As an Admin, I would like to be registered in the system :rocket:
-- **TD** : Create exception handler :hammer_and_wrench:
+- **TD** : Create exception handler. Perform operations depending on roles :hammer_and_wrench:
 
 ## Glossary
 

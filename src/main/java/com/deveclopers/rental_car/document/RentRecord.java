@@ -11,7 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document
 @Getter
 @Setter
-public class Rent {
+public class RentRecord {
 
   @Id private String id;
   private ObjectId carId;
@@ -19,15 +19,17 @@ public class Rent {
   private ObjectId responsibleAgentEmployeeId;
   private ObjectId responsibleManagerEmployeeId;
   private ObjectId responsibleOfficeId;
-  private LocalDateTime rentDate;
+  private LocalDateTime rentDate = LocalDateTime.now();
   private LocalDateTime start;
   private LocalDateTime end;
   private Boolean withDriver;
   private ObjectId driverEmployeeId;
   private Double totalToPay;
-  private String placeToPickUp;
+  private Boolean isPickedUpAtOffice;
+  private String externalPlaceToPickUp;
   private String coordinatesToPickup;
-  private String placeToRetrieve;
+  private Boolean isReturnedToOffice;
+  private String externalPlaceToRetrieve;
   private String coordinatesToRetrieve;
   private RentType type;
   private Integer daysRent;

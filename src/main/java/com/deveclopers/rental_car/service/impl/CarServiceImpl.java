@@ -130,8 +130,12 @@ public class CarServiceImpl implements CarService {
       car.setDoors(carDto.doors());
       car.setSeats(carDto.seats());
       car.setCategoryId(new ObjectId(category.getId()));
+
+      // Take care with Roles
       car.setIsOwned(true);
-      car.setIsVerified(true); // Take care with Roles
+      car.setIsVerified(true);
+      car.setIsAvailable(true);
+      car.setIsActive(true);
 
       return carRepository.save(car).map(savedCar -> new DefaultDto(savedCar.getId()));
     };

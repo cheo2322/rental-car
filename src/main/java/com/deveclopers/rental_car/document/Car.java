@@ -45,4 +45,8 @@ public class Car {
   private String description;
   private Boolean isVerified;
   private List<String> photos;
+  private Boolean isAvailable;
+  private String unavailabilityReason;
+  private Boolean isActive;
+  private String nonActiveReason;
 }
