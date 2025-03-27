@@ -9,7 +9,10 @@ import com.deveclopers.rental_car.document.dto.CarDto;
 import com.deveclopers.rental_car.document.dto.CategoryDto;
 import com.deveclopers.rental_car.document.dto.DefaultDto;
 import com.deveclopers.rental_car.document.dto.ModelDto;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 /** Service for CRUD and all functionalities related to Car, Brand, Model and Category documents. */
 public interface CarService {
@@ -45,4 +48,12 @@ public interface CarService {
    * @return the Car ID wrapped into a DefaultDto.
    */
   Mono<DefaultDto> createCar(CarDto carDto);
+
+  /**
+   * Get Car by filters.
+   *
+   * @param brandId to filter by Brand.
+   * @return a Flux with Car filtered.
+   */
+  Flux<DefaultDto> getCars(List<String> brandId);
 }

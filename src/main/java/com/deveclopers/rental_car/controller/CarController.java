@@ -6,12 +6,11 @@ import com.deveclopers.rental_car.document.dto.CategoryDto;
 import com.deveclopers.rental_car.document.dto.DefaultDto;
 import com.deveclopers.rental_car.document.dto.ModelDto;
 import com.deveclopers.rental_car.service.CarService;
+import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RestController
@@ -54,5 +53,10 @@ public class CarController {
         .createCar(carDto)
         .map(defaultDto -> ResponseEntity.status(HttpStatus.CREATED).body(defaultDto))
         .defaultIfEmpty(ResponseEntity.badRequest().build());
+  }
+
+  @GetMapping
+  public Flux<DefaultDto> getCars(@RequestParam List<String> brandIds) {
+    return carService.getCars(brandIds);
   }
 }

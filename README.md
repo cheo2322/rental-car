@@ -22,16 +22,23 @@
 
 - **US3** : As an admin, office admin or car owner, I would like to add a Car from the company :white_check_mark:
 
-  **Endpoints** : POST Car
+  **Endpoints** : POST Car :link:
 
   **TD** : Check the role in order to add the attributes. Condition ? . Add photos for Car :hammer_and_wrench:
 
 - **US4** : As a registered Client, I would like to rent a selected Car :white_check_mark:
 
-  **Endpoints** : POST CreateRentRecord
+  **Endpoints** : POST CreateRentRecord :link:
 
   **TD** : Add the business responsible. Read the Client ID from Spring Security. Create a way to reserve Car before to
-  pay, in order to avoid crashes
+  pay, in order to avoid crashes :hammer_and_wrench:
+
+- **US5** : As a registered Client, I would like to filter Car by Brand, Model :hourglass:
+
+  **Endpoints** : GET Car :link:
+
+  **TD** : Add the business responsible. Read the Client ID from Spring Security. Create a way to reserve Car before to
+  pay, in order to avoid crashes :hammer_and_wrench:
 
 - **US#** : As a registered Client, I would like to filter Cars by brand :rocket:
 - **US#** : As a private Car Owner, I would like to register my car to be rented by the company :rocket:

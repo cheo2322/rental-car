@@ -15,10 +15,12 @@ import com.deveclopers.rental_car.repository.CarRepository;
 import com.deveclopers.rental_car.repository.CategoryRepository;
 import com.deveclopers.rental_car.repository.ModelRepository;
 import com.deveclopers.rental_car.service.CarService;
+import java.util.List;
 import java.util.function.Function;
 import org.bson.types.ObjectId;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
@@ -89,6 +91,20 @@ public class CarServiceImpl implements CarService {
         .flatMap(getExistsHandler(carDto));
   }
 
+  @Override
+  public Flux<DefaultDto> getCars(List<String> brandIds) {
+    return Flux.fromIterable(brandIds)
+        .map(ObjectId::new)
+        .flatMap(carRepository::findByBrandId)
+        .map(car -> new DefaultDto(car.getId()));
+  }
+
+  /**
+   * Verify the Car.
+   *
+   * @param carDto with the information from Brand.
+   * @return a Function with the DefaultDto.
+   */
   private Function<Boolean, Mono<DefaultDto>> getExistsHandler(CarDto carDto) {
     return exists -> {
       if (exists) {
@@ -102,6 +118,12 @@ public class CarServiceImpl implements CarService {
     };
   }
 
+  /**
+   * Verify the Brand.
+   *
+   * @param carDto with the information from Brand.
+   * @return a Function with the DefaultDto.
+   */
   private Function<Brand, Mono<DefaultDto>> getBrandHandler(CarDto carDto) {
     return brand ->
         modelRepository
@@ -110,6 +132,13 @@ public class CarServiceImpl implements CarService {
             .switchIfEmpty(Mono.empty());
   }
 
+  /**
+   * Verify the Model.
+   *
+   * @param carDto with the information from Brand.
+   * @param brand with the Brand for the response.
+   * @return a Function with the DefaultDto.
+   */
   private Function<Model, Mono<DefaultDto>> getModelHandler(CarDto carDto, Brand brand) {
     return model ->
         categoryRepository
@@ -118,6 +147,14 @@ public class CarServiceImpl implements CarService {
             .switchIfEmpty(Mono.empty());
   }
 
+  /**
+   * Add the Cart to the database.
+   *
+   * @param carDto with the information from Brand.
+   * @param brand with the Brand for the response.
+   * @param model with the Model for the response.
+   * @return a Function with the DefaultDto.
+   */
   private Function<Category, Mono<DefaultDto>> getCategoryHandler(
       CarDto carDto, Brand brand, Model model) {
     return category -> {
