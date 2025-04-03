@@ -54,3 +54,4 @@
 - NAT: Not a Task
 - TD: Technical Debt
 - RM: Readme
+- NNF: New Needed Feature
