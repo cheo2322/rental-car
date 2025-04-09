@@ -51,4 +51,11 @@ public class BrandController {
   public Mono<BrandModelDto> createBrandAndModel(@Valid @RequestBody BrandModelDto brandModelDto) {
     return brandService.createBrandAndModel(brandModelDto.brandName(), brandModelDto.modelName());
   }
+
+  @PostMapping("/{id}/models")
+  @ResponseStatus(HttpStatus.CREATED)
+  public Mono<IdAndNameDto> createModelFromName(
+      @PathVariable("id") String brandId, @Valid @RequestBody IdAndNameDto idAndNameDto) {
+    return modelService.createModelFromName(brandId, idAndNameDto.name());
+  }
 }
