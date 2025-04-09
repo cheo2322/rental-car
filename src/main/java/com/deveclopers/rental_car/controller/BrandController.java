@@ -1,5 +1,6 @@
 package com.deveclopers.rental_car.controller;
 
+import com.deveclopers.rental_car.document.dto.BrandModelDto;
 import com.deveclopers.rental_car.document.dto.IdAndNameDto;
 import com.deveclopers.rental_car.service.BrandService;
 import com.deveclopers.rental_car.service.ModelService;
@@ -43,5 +44,11 @@ public class BrandController {
   @ResponseStatus(HttpStatus.CREATED)
   public Mono<IdAndNameDto> createBrand(@Valid @RequestBody IdAndNameDto idAndNameDto) {
     return brandService.createBrandFromName(idAndNameDto.name());
+  }
+
+  @PostMapping("/models")
+  @ResponseStatus(HttpStatus.CREATED)
+  public Mono<BrandModelDto> createBrandAndModel(@Valid @RequestBody BrandModelDto brandModelDto) {
+    return brandService.createBrandAndModel(brandModelDto.brandName(), brandModelDto.modelName());
   }
 }
